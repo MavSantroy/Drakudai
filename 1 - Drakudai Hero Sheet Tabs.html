@@ -1,0 +1,1482 @@
+<!--
+    
+    TO DO
+    1. add armor/shield defense scores 
+    2. do the armor section
+    3. do the shield section
+    4. artifacts section (repeating field)
+    5. weapons section (repeating fields)
+    6. PSIONICS (Repeating Field? Dropdown to select psionic for each)
+
+-->
+
+<input type="hidden" class="sheet-tabstoggle" name="attr_sheetTab"  value="character"  />
+<div style="padding-left: 15em; padding-bottom: 10px;">
+    <button class="sheet-button-roll" type="action" name="act_character" >Character</button>           
+    <button class="sheet-button-roll" type="action" name="act_equipped" >Equipped</button>
+    <button class="sheet-button-roll" type="action" name="act_editskills" >Skills</button>
+    <button class="sheet-button-roll" type="action" name="act_inventory" >Inventory</button>
+    <button class="sheet-button-roll" type="action" name="act_editcharacter" >Edit Character</button>    
+    <button class="sheet-button-roll" type="action" name="act_editpsionics" >Edit Psionics</button>    
+    
+</div>
+
+<div class="sheet-character"> 
+    <div class="sheet-grid-section">        
+        <div class="sheet-core-stats sheet-block" style="text-align: center;">        
+        <h3>ATTRIBUTES</h3>                    
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Strength}} {{Strength Roll=[[1d20+@{strength}]]}}"> STR</button>            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Dexterity}} {{Dexterity Roll=[[1d20+@{dexterity}]]}}"> DEX</button>            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Constitution}} {{Constitution Roll=[[1d20+@{constitution}]]}}"> CON</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Intelligence}} {{Intelligence Roll=[[1d20+@{intelligence}]]}}"> INT</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Wisdom}} {{Wisdom Roll=[[1d20+@{wisdom}]]}}"> WIS</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Charisma}} {{Charisma Roll=[[1d20+@{charisma}]]}}"> CHA</button>            
+        <h4 class="sheet-gold-color sheet-subheading" style="grid-column: 1 / -1; padding-top:8px; text-align:center;">SAVES</h4>                    
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls STR SAVE}} {{Strength Save=[[1d20+@{strength+@{psi_deflection} ]]}}"> STR</button>            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls DEX SAVE}} {{Dexterity Save=[[1d20+@{dexterity+@{psi_deflection} ]]}}"> DEX</button>            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls CON SAVE}} {{Constitution Save=[[1d20+@{constitution+@{psi_deflection} ]]}}"> CON</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls INT SAVE}} {{Intelligence Save=[[1d20+@{intelligence+@{psi_deflection} ]]}}"> INT</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls WIS SAVE}} {{Wisdom Save=[[1d20+@{wisdom+@{psi_deflection} ]]}}"> WIS</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls CHA SAVE}} {{Charisma Save=[[1d20+@{charisma+@{psi_deflection} ]]}}"> CHA</button>            
+        </div>   
+        <div class="sheet-defense sheet-block" style="text-align: left;">
+            <h3>HEALTH</h3>                                    
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 1;">Current HP<input class="sheet-inputfield sheet-blue-color" title="Your current HP after taking damage" type="number" name="attr_health" style="text-align: center; width: 6em"></span>
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 2;">Health Max<input class="sheet-inputfield sheet-blue-color" title="Your max HP, including any artifiacts, etc" type="number" name="attr_health_max" value="attr_health_max" style="text-align: center; width: 6em"></span>
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 3;">Temp HP<input class="sheet-inputfield sheet-blue-color" title="Additional HP gained from stimulants and other sources" type="number" name="attr_temp_hp" style="text-align: center; width: 6em;"></span>
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 1;">Less Damge<input class="sheet-inputfield sheet-blue-color" title="Natural Damage Reduction" type="number" name="attr_damage_reduction" value="floor((@{psi_body_discipline}*@{psi_deflection})+@{damage_reduction_artifact}+@{damage_reduction_misc}+(@{constitution}/2))" style="text-align: center; width: 6em;" disabled></span>                        
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 2;">Regeneration<input class="sheet-inputfield sheet-blue-color" title="Natural Regeneration including Body Discipline" type="number" name="attr_movement" value="(@{constitution}/2)+(@{psi_body_discipline_regeneration}+@{regeneration_misc}+@{regeneration_artifact})" style="text-align: center; width: 5em;" disabled></span>
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 3;">Penetration Plus<input class="sheet-inputfield sheet-blue-color" title="Unarmored P+" type="number" name="attr_penetration_plus" value="floor(@{penetration_plus}/10)+(@{penetration_plus_artifact}+@{penetration_plus_misc})" style="text-align: center; width: 5em;" disabled></span>            
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 1;">Movement<input class="sheet-inputfield sheet-blue-color" title="Your Hero's movment measured in feet"type="number" name="attr_movement" value="(3+@{dexterity}+@{psi_telekinesis_augment}+@{movement_bonus_misc})" style="text-align: center; width: 5em;" disabled></span>                        
+            <span class="sheet-blue-color"   style="text-align: center; grid-column: 2;">Armored Def<input class="sheet-inputfield sheet-blue-color" title="Ranged Defense Score without armor and shields" type="number" name="attr_ranged_defense" value="floor(10+@{dexterity}+@{psi_deflection}+@{ranged_def_misc})" style="text-align: center; width: 6em;" disabled></span>            
+            <span disabled></span>
+            
+<h4 class="sheet-subheading sheet-gold-color" style="grid-column: 2;">Saving Throws</h4>
+            <span disabled></span>
+            <!-- SAVING THROWS -->
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Strength Saving Throw}} {{roll=[[1d20+@{strength}+@{psi_body_discipline}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:10px;">STR</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Dexterity Saving Throw}} {{roll=[[1d20+@{dexterity}+@{psi_body_discipline}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:10px;">DEX</button></span>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Constitution Saving Throw}} {{roll=[[1d20+@{constitution}+@{psi_body_discipline}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:10px;">CON</button></span>
+            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Intelligence Saving Throw}} {{roll=[[1d20+@{intelligence}+@{psi_clairvoyance}+@{psi_deflection}]]}}""><span style="font-size: small; padding-left:10px;">INT</button></span>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Wisdom Saving Throw}} {{roll=[[1d20+@{wisdom}+@{psi_clairvoyance}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:10px;">WIS</button></span>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Charisma Saving Throw}} {{roll=[[1d20+@{charisma}+@{psi_domination}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:10px;">CHA</button></span>            
+            
+            <span class="sheet-blue-color"   style="text-align: left; padding-left: 5px;">RDef <input class="sheet-inputfield sheet-blue-color" title="Ranged Defense Score including armor and shields" type="number" name="attr_ranged_defense" value="10+@{Dexterity}+@{psi_deflection_ranged_defense}" style="text-align: center; width: 3em;" disabled></span>            
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Mental Defense Saving Throw}} {{roll=[[1d20+@{wisdom}+@{psi_domination}+@{psi_deflection}+@{raw_energy}]]}}"><span style="font-size: small; padding-left: 5px;">Psi Def</button>
+            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} rolls Computer Defense}} {{roll=[[1d20+@{cds}+@{psi_deflection}]]}}"><span style="font-size: small; padding-left:5px;">Firewall</button>
+            
+        </div>    
+        <div class="sheet-skills sheet-block">
+            <h3>SKILLS</h3>            
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Acrobatics}} {{roll=[[1d20+@{acrobatics}]]}}"> Acrobatics</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Athletics}} {{roll=[[1d20+@{athletics}]]}}"> Athletics</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Awareness}} {{roll=[[1d20+@{awareness}]]}}"> Awareness</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Barter}} {{roll=[[1d20+@{barter}]]}}"> Barter</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Charm}} {{roll=[[1d20+@{charm}]]}}"> Charm</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Deception}} {{roll=[[1d20+@{deception}]]}}"> Deceive</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Diplomacy}} {{roll=[[1d20+@{diplomacy}]]}}"> Diplomacy</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Focus}} {{roll=[[1d20+@{focus}]]}}"> Focus</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Forgery}} {{roll=[[1d20+@{forgery}]]}}"> Forgery</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Gather Information}} {{roll=[[1d20+@{gather_info}]]}}"> Gather Info</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Insight}} {{roll=[[1d20+@{insight}]]}}"> Insight</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Intimidate}} {{roll=[[1d20+@{intimidate}]]}}"> Intimidate</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Investigate}} {{roll=[[1d20+@{investigate}]]}}"> Investigate</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Mechanic}} {{roll=[[1d20+@{mechanic}]]}}"> Mechanic</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Medic}} {{roll=[[1d20+@{medic}]]}}"> Medic</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Pilot}} {{roll=[[1d20+@{pilot}]]}}"> Pilot</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Stealth}} {{roll=[[1d20+@{stealth}]]}}"> Stealth</button>
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Survival}} {{roll=[[1d20+@{survival}]]}}"> Survival</button>            
+            <button class="sheet-button-roll" style="width: 6em;" type="roll" style="width: 6em;" value="&{template:default} {{name=@{character_name} Trick}} {{roll=[[1d20+@{trick}]]}}"> Trick</button>
+        </div>                
+       
+    </div>
+</div>
+
+<div class="sheet-equipped">
+    <h3>Equipped Weapons and Armor Stats</h3>
+    <span class="sheet-blue-color">Equipped Armor and Weapons</span> 
+</div>
+
+<div class="sheet-editskills sheet-blue-color">       
+        <div class="sheet-block sheet-blue-color sheet-edit-skills-grid-section sheet-edit-combat-style" style="align-items: center">
+            <h3>Melee Combat Style (& blueprint)</h3>                    
+                <b class="sheet-center">Style Name</b>
+                <b class="sheet-center">Attribute</b>     
+                <b class="sheet-center">Points</b>           
+                <b class="sheet-center">Damage</b>
+                <b class="sheet-center">Dmg +</b>
+                <b class="sheet-center">Mult</b>
+                <b class="sheet-center">P+ </b>
+                <b class="sheet-center">Atk +</b>
+                <b class="sheet-center">Def +</b>   
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="text" name="attr_combat_style_dr_name_1" value="DR 1" style="width: 60px;" title="Name your DR skills here"/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="text" name="attr_combat_style_dr_name_2" value="DR 2" style="width: 60px;" title="Name your DR skills here"/>     
+                
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_name" type="text">
+                <select class="sheet-dropdown sheet-blue-color sheet-center sheet-blue-color"   name="attr_combat_style_attribute">
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{strength}">Strength</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{dexterity}">Dexterity</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{constitution}">Constitution</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{intelligence}">Intelligence</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{wisdom}">Wisdom</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{charisma}">Charisma</option>
+                    <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{attribute_dropdown_none}">None</option>
+                </select>
+
+                <!-- DISPLAY ROW -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_points" value="0" type="number" /> <!-- POINTS -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dmg_dice" value="DMG DICE" type="text" /> <!-- DICE -->                                                
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_dmg_bonus" value="floor(@{combat_style_points}/@{combat_style_dmg_bonus_cost})" disabled="true" /> <!-- BONUS DMG -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_dmg_mult" value="floor(@{combat_style_points}/@{combat_style_dmg_mult_cost})" disabled="true" /> <!-- MULTIPLIER -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_pen_plus" value="floor(@{combat_style_points}/@{combat_style_pen_plus_cost})" disabled="true" /> <!-- P+ -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_atk_bonus" value="floor(@{combat_style_points}/@{combat_style_atk_bonus_cost})" disabled="true" /> <!-- ATK BONUS -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_def_bonus" value="floor(@{combat_style_points}/@{combat_style_def_bonus_cost})" disabled="true" /> <!-- DEF BONUS -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_dr" value="floor(@{combat_style_points}/@{combat_style_dr_1_cost})" disabled="true" /> <!-- DR 1 -->
+                <input class="sheet-inputfield sheet-blue-color sheet-center" type="number" name="attr_combat_style_dr_2" value="floor(@{combat_style_points}/@{combat_style_dr_2_cost})" disabled="true" /> <!-- DR 2 -->
+                
+                
+                <!-- INPUT CALCULATIONS ROW --- HIDDEN -->                   
+      
+
+                <!-- COST PER BONUS ROW -->
+                <label disabled></label>
+                <label disabled></label>
+                <span class="sheet-blue-color sheet-center" style="font-size: smaller;">Cost::Bonus</span>
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dmg_dice_cost" value=""  />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dmg_bonus_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dmg_mult_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_pen_plus_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_atk_bonus_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_def_bonus_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dr_1_cost" value="" type="number" />
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_combat_style_dr_2_cost" value="" type="number" />
+                <button class="sheet-button-roll" type="roll" value="&{template:default} {{name=@{combat_style_name} Attacks!}} {{attack=[[1D20+@{combat_style_attribute}+@{combat_style_atk_bonus_cost}]]}} {{Damage=[[floor(@{combat_style_dmg_dice}+@{combat_style_dmg_bonus})*@{combat_style_dmg_mult}]]}} {{P+=[[@{combat_style_pen_plus}]]}} {{@{combat_style_dr_name_1}=[[10+@{combat_style_dr}]]}} {{@{combat_style_dr_name_2}=[[10+@{combat_style_dr_2}]]}}"><span style="font-size: small;"> Attack!<span></button>
+                <button class="sheet-button-roll" type="roll" value="&{template:default} {{name=@{combat_style_name} Defends!}} {{defend=[[1D20+@{combat_style_attribute}+@{combat_style_def_bonus_cost}]]}}"><span style="font-size: small;"> Defends!<span></button>
+                
+        </div>
+    <!-- <div style="align-items:center; padding-top:25px;">   -->
+        <div class="sheet-blue-color sheet-edit-skills-grid-section sheet-edit-skills sheet-center" >
+                <!-- <span class="sheet-center sheet-inputfield sheet-gold-color" name="repeating_skillrollbutton" value="Roll Button" style="width: 80px;" disabled /> -->                    
+                <h4 disabled style="color:#000005"> - </h4>
+                <b class="sheet-gold-color" style="padding-left:28px; padding-right: 35px;">Roll</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 10px;">Skill Name</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 20px;">Attribute</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 25px;">Cyb</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 30px;">Gen</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 30px;">Psionic</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 25px;">Misc</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 20px;">Art</b>
+                <b class="sheet-center sheet-gold-color" style="padding-right: 6px;">Progression</b>                
+                <b class="sheet-center sheet-gold-color" style="padding-right: 15px;">Points</b>
+                <b class="sheet-center sheet-gold-color">Level</b>
+        </div>
+        <div class="sheet-edit-skills-grid-section sheet-edit-skills">
+                <fieldset class="repeating_skills">                
+                    <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{skillname} }} {{roll=[[1d20+@{skillattribute}+@{skillvibonus}+@{skillgeneticbonus}+@{skillpsibonus}+@{skillmiscbonus}+@{skillartifactbonus}+@{skillpoints}]]}}" style="height:28px;"></button>
+                    <input class="sheet-inputfield sheet-blue-color" type="text" name="attr_skillname" value="" />
+
+                    <select class="sheet-dropdown sheet-inputfield-health sheet-blue-color" name="attr_skillattribute" style="width:60px;"> 
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{strength}">STR</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{dexterity}">DEX</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{constitution}">CON</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{intelligence}">INT</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{wisdom}">WIS</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{charisma}">CHA</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{attribute_dropdown_none}">none</option>
+                    </select>
+                    
+                    <input class="sheet-inputfield sheet-dropdown sheet-blue-color" type="number" name="attr_skillvibonus" value="0" style="width:52px;">                        
+                    <input class="sheet-inputfield sheet-dropdown sheet-blue-color" type="number" name="attr_skillgeneticbonus" value="0" style="width:52px;">
+                    
+                    <select class="sheet-inputfield sheet-dropdown sheet-blue-color" name="attr_skillpsibonus" > 
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_body_discipline}">Body Disc</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_causation}">Causation</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_clairvoyance}">Clairvoyance</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_deflection}">Deflection</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_domination}">Domination</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_energy_communion}">Energy</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_molecular_alteration}">Molecular</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_pyrokinesis}">Pyro</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_subatomic_alteration}">Subatomic</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_telekinesis}">Telekinesis</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="@{psi_anti_psionics}">Anti Psi</option>
+                        <option class="sheet-dropdown sheet-blue-color" style="background-color:#000005;" value="NONE">None</option>
+                    </select>
+                    
+                    <input class="sheet-inputfield sheet-dropdown sheet-blue-color" type="number" name="attr_skillmiscbonus" value="0" style="width:52px;">                        
+                    <input class="sheet-inputfield sheet-dropdown sheet-blue-color" type="number" name="attr_skillartifactbonus" value="0" style="width:52px;">                                                
+                    
+                    <select class="skill-progression sheet-dorpdown sheet-blue-color sheet-inputfield" type="text" name="attr_skillprogression" style="width: 80px;">
+                        <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                        <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                        <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                        <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                        <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                        <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                        <option style="color:#278bce;background:#000000;">5,5,5,5</option>                                                 
+                    </select>
+                    <input class="sheet-inputfield sheet-dropdown sheet-blue-color" type="number" name="attr_skillpoints" value="0" style="width:52px;">
+                    <input class="sheet-center sheet-inputfield sheet-blue-color" name="repeating_skillnamelevel" value="Level" style="width: 52px;" />                        
+                    
+                </fieldset>
+        </div>        
+        </div>
+</div>                 
+</div>
+
+<div class="sheet-inventory">
+    <div class="sheet-inventory-grid-section">
+        <div> <!-- MONEY AT TOP -->
+            <!-- Galactic Credits -->
+            <input class="sheet-inputfield sheet-purple-color" type="hidden" name="attr_galactic_credits_header" value="Galactic Credits">            
+            <span class="sheet-purple-color" name="attr_galactic_credits_header" value="attr_galactic_credits_header" style="padding-left:7em;"></span>
+            <input class="sheet-inputfield sheet-purple-color" style="width:10em;" type="number" title="Galactic Credits" name="attr_galactic_credits" value="0">    
+    
+            <!-- Gold Credits -->
+            <input class="sheet-inputfield sheet-gold-color" type="hidden" name="attr_gold_credits_header" value="Gold Credits">            
+            <span class="sheet-gold-color" name="attr_gold_credits_header" value="attr_gold_credits_header"></span>
+            <input class="sheet-inputfield sheet-gold-color" style="width:10em;" type="number" title="Gold Credits" name="attr_galactic_credits" value="0"> 
+            <!-- Iron Credits -->
+            <input class="sheet-inputfield sheet-silver-color" type="hidden" name="attr_iron_credits_header" value="Iron Credits">            
+            <span class="sheet-silver-color" name="attr_iron_credits_header" value="attr_iron_credits_header"></span>
+            <input class="sheet-inputfield sheet-silver-color" style="width:10em;" type="number" title="Iron Credits" name="attr_iron_credits" value="0"> 
+        </div>
+            <span class="sheet-center edit-inventory-grid-section sheet-gold-color" style="padding-top: 10px; text-align: center;">INVENTORY</span>
+        
+            <div class="sheet-block edit-armor-entries sheet-center sheet-blue-color">                
+                <h4 class="sheet-center" style="grid-column: 1 / 15; color:#278bce; font-variant-caps: all-small-caps; font-size:large;"> Armor </h4>
+                <span>Name</span>
+                <span>T.L.</span>
+                <span>Def</span>
+                <span>HP</span>
+                <span>Max HP</span>
+                <span>Mult</span>
+                <span>P+</span>
+                <span>Shrug</span>                
+                <span>Regen</span>
+                <span>CDS</span>
+                <span>STR</span>
+                <span>DEX</span>
+                <span>CON</span>
+                <span>Mov</span>
+
+                <!-- DISPLAY ROW -->
+                <input class="sheet-inputfield sheet-red-color sheet-center" name=attr_armor_name" value="Armor Name" style="width: 75px;" title="A name for your armor."/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_armor_tech_level" value="3" type="number" style="width: 45px;" title="The sum of all property Tech Levels."/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_armor_def" value="floor((@{armor_tech_level}/@{armor_ranged_def_cost}) + @{dexterity} + @{armor_dexterity})" title="Armor's Defense Score bonus." style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_armor_health" value="N/A" title="Armor Current HP" style="width: 75px;" disabled/>
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_armor_health_max" value="floor(@{armor_strength}*@{armor_constitution})*@{armor_health_mult}" style="width: 75px;" title="Armor Max HP" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_health_mult" value="floor(@{armor_tech_level}/@{armor_health_mult_cost}+1)" title="Armor Multiplier when rolling HP Dice." style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_p_plus" value="floor(@{armor_tech_level}/@{armor_p_plus_cost})" title="Armor Penetration Plus" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_shrug" value="floor(@{armor_tech_level}/@{armor_shrug_cost})" title="Armor Damage Reduction"  style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_regen" value="floor(@{armor_tech_level}/@{armor_regen_cost})" title="Armor Regeneration per turn" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_cds" value="floor(@{armor_tech_level}/@{armor_cds_cost})" title="Armor Computer Defense Score" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_strength" value="floor(@{armor_tech_level}/@{armor_strength_cost})" title="Armor Strength" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_dexterity" value="floor(@{armor_tech_level}/@{armor_dexterity_cost})" title="Armor Dexterity" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_constitution" value="floor(@{armor_tech_level}/@{armor_constitution_cost})" title="Armor Constitution" style="width: 45px;" disabled/>     
+                <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_armor_movement" value="floor(3+(@{armor_tech_level}/@{armor_movement_cost}/5))" title="Armor Movement measured in squares, or 5 foot units." style="width: 45px;" disabled/>   
+                
+                
+                <!-- INPUT CALCULATIONS ROW --- HIDDEN -->                   
+      
+
+                <!-- COST PER BONUS ROW -->                
+                <span class="sheet-grey-color sheet-center" style="font-size: smaller;" title="Defaults in place">Cost::Bonus</span>
+                <label disabled></label>
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_ranged_def_cost" value="8" title="Armor Defense Score cost in tech levels"/>                     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_health_max_cost" value="2" title="Armor Current Health Max"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_health_mult_cost" value="16" title="Armor Penetration Plus cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_health_max" value="2" title="Armor Multiplier when rolling HP Dice." />     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_p_plus_cost" value="4" title="Armor Penetration Plus cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_shrug_cost" value="2" title="Armor Damage Reduction cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_regen_cost" value="12" title="Armor Regeneration per turn cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_cds_cost" value="2" title="Armor Computer Defense Score cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_strength_cost" value="2" title="Armor Strength cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_dexterity_cost" value="6" title="Armor Dexterity cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_constitution_cost" value="4" title="Armor Constitution cost in Tech Levels"/>     
+                <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_armor_movement_cost" value="4" title="Armor Movement cost in Tech Levels"/>     
+            </div>  
+
+           
+<!-- WEAPONS-->
+            <div class="sheet-block sheet-center sheet-blue-color">                    
+                <span class="sheet-center edit-inventory-grid-section sheet-gold-color" style="padding-top: 10px; text-align: center;">WEAPONS</span>
+                <div class="sheet-center" style="text-align: center; display: grid; column-gap: 4px; grid-template-columns: 75px 45px 45px 75px 45px 45px 45px 45px 45px 45px 45px 60px 60px 60px;" >
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Name</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">T.L.</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Atk+</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">DMG</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Dmg+</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Mult</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">RF</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">P+</span>                
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Range</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">RoF</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Ammo</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Type</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Effect 1</span>
+                    <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Effect 2</span>
+                </div>                        
+                <div>
+                    <!-- <fieldset class="repeating_inventory" style="display: grid; grid-template-columns: 125px 400px 52px 75px 75px 52px;"> -->
+                    <fieldset class="sheet-block repeating_weapons sheet-center" style="padding-top:10px;" >
+                    <!-- DISPLAY ROW -->                                
+                        <input class="sheet-inputfield sheet-red-color sheet-center" name=attr_weapon_name" value="Weapon Name" style="width: 75px;" title="A name for your weapon." />     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_weapon_tech_level" value="0" type="number" style="width: 45px;" title="The sum of all weapon's property Tech Levels."/>                        
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_weapon_atk_bonus" value="floor(@{weapon_tech_level}/@{weapon_atk_bonus_cost})" title="Weapon's attack bonus." style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_weapon_damage" value="DICE" title="Weapon's damage dice." style="width: 75px;" disabled/>
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_weapon_damage_bonus" value="floor(@{weapon_tech_level}/@{weapon_damage_bonus_cost})" style="width: 45px;" title="Weapon's bonus damage" disabled/>  
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_damage_mult" value="floor(@{weapon_tech_level}/@{weapon_damage_mult_cost}+1)" title="Weapon's damage multiplier" style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_rf" value="DICE" title="Rapid Fire Dice"  style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_p_plus" value="floor(@{weapon_tech_level}/@{weapon_p_plus_cost})" title="Weapon's P+" style="width: 45px;" disabled/>                
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_range" value="floor(@{weapon_tech_level}/@{weapon_range_cost})" title="Weapon's Range" style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_rate_of_fire" value="floor(@{weapon_tech_level}/@{weapon_rate_of_fire_cost})" title="Weapon's Rate of Fire (not Rapid Fire)" style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_ammo" value="floor(@{weapon_tech_level}/@{weapon_ammo_cost})" title="Weapon's Maximum Ammo'" style="width: 45px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_type" title="Weapon Type of Damage (projectile, laser, plasma, etc.)" style="width: 60px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_effect_1" title="Weapon Effect such as Stun DR" style="width: 60px;" disabled/>     
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" name=attr_weapon_effect_2" title="Weapon Effect such as Stun DR" style="width: 60px;" disabled/>   
+                        
+                        <input class="sheet-inputfield sheet-blue-color sheet-center" value="TL Cost" style="width: 75px;" title="Defaults in place." disabled/>   
+                        <input class="sheet-inputfield" value="null" style="width: 45px;" disabled />                           
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_atk_bonus_cost" value="6" title="Weapon attack bonus cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_damage_cost" value="4" title="Weapon Damage cost in Tech Levels." style="width: 75px;" />
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_damage_bonus_cost" value="3" title="Weapon Bonus Damage cost in Tech Levels."  style="width: 45px;" />   
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_damage_mult_cost" value="12" title="Weapon Multiplier cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_rf_cost" value="7" title="Weapon Rapid Fire cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_p_plus_cost" value="16" title="Weapon P+ cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_range_cost" value="3" title="Weapon Range cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_rate_of_fire_cost" value="6" title="Weapon Rate of Fire cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_ammo_cost" value="2" title="Weapon Ammo cost in Tech Levels"  style="width: 45px;" />     
+                        <input class="sheet-inputfield" value="fire?" style="width: 60px;" disabled />       
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_effect_1_cost" value="0" title="Effects that impose a DR"  style="width: 60px;" />     
+                        <input class="sheet-inputfield sheet-silver-color sheet-center" type="number" name="attr_weapon_effect_2_cost" value="0" title="Effects that impose a DR"  style="width: 60px;" />       
+                    </fieldset>
+                </div>                
+            </div>      
+
+            <div class="sheet-block sheet-center sheet-blue-color">                    
+                <span class="sheet-center edit-inventory-grid-section sheet-gold-color" style="padding-top: 10px; text-align: center;">ITEMS</span>
+                <div class="sheet-center" style="text-align: center; display: grid; grid-template-columns: 125px 375px 52px 75px 75px 52px;" >
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnameheader" value="repeating_itemnameheader">NAME</span>
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnamedescription" value="repeating_itemnamedescription">DESCRIPTION</span>
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnamequantity" value="repeating_itemnamequantity">  COUNT</span>
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnameweight" value="repeating_itemnameweight">  WEIGHT</span>
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnamesize" value="repeating_itemnamesize">  SIZE</span>  
+                    <span class="sheet-center sheet-gold-color" name="repeating_itemnametechlevel" value="repeating_itemnametechlevel">TL</span>
+                </div>                        
+                <div>
+                    <!-- <fieldset class="repeating_inventory" style="display: grid; grid-template-columns: 125px 400px 52px 75px 75px 52px;"> -->
+                    <fieldset class="sheet-block repeating_inventory" >
+                        <input type="text" class="sheet-center sheet-inputfield sheet-red-color" name="attr_itemname" style="width: 125px;">
+                        <input type="text" class="sheet-center sheet-inputfield sheet-blue-color" name="attr_itemnamedescription" style="width: 375px;">
+                        <input type="number" class="sheet-center sheet-inputfield sheet-blue-color" name="attr_itemnamequantity" style="width: 52px;">                    
+                        <input type="number" class="sheet-center sheet-inputfield sheet-blue-color" name="attr_itemnameweight" style="width: 75px;">        
+                        <input type="text" class="sheet-center sheet-inputfield sheet-blue-color" name="attr_itemnamesize" style="width: 75px;">        
+                        <input type="number" class="sheet-center sheet-inputfield sheet-blue-color" name="attr_itemnametechlevel" style="width: 52px;">        
+                    </fieldset>
+                </div>                
+            </div>      
+
+            <div class="sheet-block sheet-center sheet-blue-color">    
+                <span class="sheet-center edit-inventory-grid-section sheet-gold-color" style="padding-top: 10px; text-align: center;">CONTACTS</span>
+                <div class="edit-contacts" style="padding-top: 10px;">
+                    <fieldset class="sheet-block repeating_contacts">                
+                        <input class="sheet-inputfield sheet-red-color" type="text" name="attr_contact" value="Name" style="width: 15em;">
+                        <input class="sheet-inputfield sheet-blue-color" type="text" name="attr_contactdata" value="Data" style="width: 45em;">
+                    </fieldset>
+                </div>            
+            </div>
+        </div>
+    </div>
+
+<div class="sheet-editcharacter">    
+    <!-- START OF EDIT SHEET -->
+    <!-- HEALTH -->
+    <div class="sheet-edit-character-grid-section">
+        <div class="sheet-edit-character-header">
+            <h4 class="ssheet-subheading" style="grid-column: 2;"> Health </h4>        
+            <h4 class="ssheet-subheading" style="grid-column: 5;"> Defense </h4>        
+        </div>
+    </div>
+    <!-- DEFENSE -->
+    <div class="sheet-edit-character-grid-section">
+        <div class="sheet-block sheet-edit-character-health">
+            <span  style="text-align: center;"> Name </span>
+            <span  style="text-align: center;"> Health </span>
+            <span  style="text-align: center;"> Cyb </span>
+            <span  style="text-align: center;"> Gen </span>
+            <span  style="text-align: center;"> Art </span>
+            <span  style="text-align: center;"> Misc </span>
+            
+
+            <span title="Sum of attributes + Various HP buffs and additional armors, etc." style="padding-top:5px;"> Health </span>
+            <span class="sheet-green-color" title="(STR*CON) + additionals ( Cyb + Gen + Art + Misc bonuses)" name="attr_nat_health" value="attr_nat_health" />
+            <input class="sheet-red-color" name="attr_nat_health" value="attr_nat_health" hidden />
+            <!-- <input class="sheet-inputfield-health" name="attr_nat_health" type="number" value="attr_nat_health" disabled /> -->
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_health" type="number" value="attr_cyb_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_health" type="number" value="attr_gen_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_health" type="number" value="attr_art_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_misc_health" type="number" value="attr_misc_health" />      
+            
+            <span style="padding-top:5px;"> P+ </span>
+            <span class="sheet-green-color" title="This is your natural P+ (not including armor/shields)" name="attr_nat_pen_plus" value="attr_nat_pen_plus" />
+            <input name="attr_nat_pen_plus" value="attr_nat_pen_plus" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_pen_plus" type="number" value="attr_cyb_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_pen_plus" type="number" value="attr_gen_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_pen_plus" type="number" value="attr_art_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_misc_pen_plus" type="number" value="attr_misc_pen_plus" />   
+
+            <span style="padding-top:5px;"> Dmg Red </span>
+            <span class="sheet-green-color" title="This is your natural Damage Reduction (not including armor/shields)" name="attr_nat_dmg_red" />
+            <input name="attr_nat_dmg_red" value="attr_nat_dmg_red" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_dmg_red" type="number" value="attr_cyb_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_dmg_red" type="number" value="attr_gen_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_dmg_red" type="number" value="attr_art_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_misc_dmg_red" type="number" value="attr_misc_dmg_red" />      
+            
+            <span style="padding-top:5px;"> Regen </span>
+            <span class="sheet-green-color" title="This is your natural Damage Reduction (not including armor/shields)" name="attr_nat_regen" style="font-size: large; text-align: center;" />
+            <input name="attr_nat_regen" value="attr_nat_regen" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_regen" type="number" value="attr_cyb_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_regen" type="number" value="attr_gen_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_regen" type="number" value="attr_art_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_misc_regen" type="number" value="attr_misc_regen" />      
+        </div>     
+    
+        <div class="sheet-block sheet-edit-character-defense">
+            <span  style="text-align: left;"> Name </span>
+            <span  style="text-align: left;"> HP </span>
+            <span  style="text-align: left;"> HP Max </span>
+            <span  style="text-align: left;"> P+ </span>
+            <span  style="text-align: left;"> Shrug </span>
+            <span  style="text-align: left;"> Regen </span>
+            <span  style="text-align: left;"> R.Def </span>
+            
+
+            <span title="Sum of attributes + Various HP buffs and additional armors, etc." style="padding-top:5px;"> Health </span>
+            <span class="sheet-green-color" title="(STR*CON) + additionals ( Cyb + Gen + Art + Misc bonuses)" name="attr_nat_health" value="attr_nat_health" />
+            <input class="sheet-red-color" name="attr_nat_health" value="attr_nat_health" hidden />
+            <!-- <input class="sheet-inputfield-health" name="attr_nat_health" type="number" value="attr_nat_health" disabled /> -->
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_health" type="number" value="attr_cyb_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_health" type="number" value="attr_gen_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_health" type="number" value="attr_art_misc_health" />
+            <input class="sheet-inputfield-health" name="attr_misc_health" type="number" value="attr_misc_health" />      
+            
+            <span style="padding-top:5px;"> P+ </span>
+            <span class="sheet-green-color" title="This is your natural P+ (not including armor/shields)" name="attr_nat_pen_plus" value="attr_nat_pen_plus" />
+            <input name="attr_nat_pen_plus" value="attr_nat_pen_plus" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_pen_plus" type="number" value="attr_cyb_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_pen_plus" type="number" value="attr_gen_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_pen_plus" type="number" value="attr_art_misc_pen_plus" />
+            <input class="sheet-inputfield-health" name="attr_misc_pen_plus" type="number" value="attr_misc_pen_plus" />   
+
+            <span style="padding-top:5px;"> Dmg Red </span>
+            <span class="sheet-green-color" title="This is your natural Damage Reduction (not including armor/shields)" name="attr_nat_dmg_red" />
+            <input name="attr_nat_dmg_red" value="attr_nat_dmg_red" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_dmg_red" type="number" value="attr_cyb_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_dmg_red" type="number" value="attr_gen_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_dmg_red" type="number" value="attr_art_misc_dmg_red" />
+            <input class="sheet-inputfield-health" name="attr_misc_dmg_red" type="number" value="attr_misc_dmg_red" />      
+            
+            <span style="padding-top:5px;"> Regen </span>
+            <span class="sheet-green-color" title="This is your natural Damage Reduction (not including armor/shields)" name="attr_nat_regen" style="font-size: large; text-align: center;" />
+            <input name="attr_nat_regen" value="attr_nat_regen" hidden />
+            <input class="sheet-inputfield-health" name="attr_cyb_misc_regen" type="number" value="attr_cyb_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_gen_misc_regen" type="number" value="attr_gen_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_art_misc_regen" type="number" value="attr_art_misc_regen" />
+            <input class="sheet-inputfield-health" name="attr_misc_regen" type="number" value="attr_misc_regen" />      
+        </div>
+    </div>
+    <!-- STATS -->    
+    <div class="sheet-edit-character-grid-section"> 
+        <div class="sheet-edit-character-core-stats sheet-block">
+            <span class="sheet-subheading sheet-center">Race</span></td>
+            <select class="sheet-dropdown" type="text" name="attr_race">
+                <option disabled hidden selected></option>
+                <option style="color:white;background:#000000;">Human</option>
+                <option style="color:white;background:#000000;">Sollox</option>
+                <option style="color:white;background:#000000;">Talaxian</option>
+                <option style="color:white;background:#000000;">Thorn</option>
+                <option style="color:white;background:#000000;">Custom</option>
+            </select>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+            <span disabled></span>
+
+
+            <h4>Attr</h4>                
+            <h4>Score</h4>
+            <h4>Cyb.</h4>                
+            <h4>Gen.</h4>
+            <h4>Art.</h4>                
+            <h4>Misc.</h4>
+            <h4>Temp</h4>
+            <h4>Points</h4>                
+            <h4>Progress</h4>
+            <h4>Level</h4>
+            <h4>Psi BD</h4>
+            <h4>Psi TK</h4>
+            <h4>Psi CA</h4>
+            <h4>Quirk</h4>
+
+                <b>STR</b>            
+                <span class="sheet-red-color sheet-center" title="Strength Score" name="attr_strength" type="number" value="attr_strength"></span>            
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_strength_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color sheet-inputfield" type="text" name="attr_strength_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_strength" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_str_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_strength_bonus" value="0" style="width: 3em; text-align: center">
+
+                <b >DEX</b>            
+                <span class="sheet-red-color sheet-center" name="attr_dexterity" value="attr_dexterity"></span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_dexterity_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color  sheet-inputfield" type="text" name="attr_dexterity_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_dexterity" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_dex_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_dexterity_bonus" value="0" style="width: 3em; text-align: center">
+
+                <b >CON</b>            
+                <span class="sheet-red-color sheet-center" name="attr_constitution" value="attr_constitution"></span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_constitution_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color  sheet-inputfield" type="text" name="attr_constitution_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_constitution" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_con_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_constitution_bonus" value="0" style="width: 3em; text-align: center">
+
+                <b >INT</b>            
+                <span class="sheet-red-color sheet-center" name="attr_intelligence" value="attr_intelligence"></span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_intelligence_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color  sheet-inputfield" type="text" name="attr_intelligence_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_int" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_int_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_intelligence_bonus" value="0" style="width: 3em; text-align: center">
+
+                <b >WIS</b>            
+                <span class="sheet-red-color sheet-center" name="attr_wisdom" value="attr_wisdom"></span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_wisdom_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color  sheet-inputfield" type="text" name="attr_wisdom_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_wis" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_wis_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_wisdom_bonus" value="0" style="width: 3em; text-align: center">
+
+                <b >CHA</b>            
+                <span class="sheet-red-color sheet-center" name="attr_charisma" value="attr_charisma"></span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_cyb" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_gen" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_art" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_misc" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_temp" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_charisma_points" value="0" style="width: 3em; text-align: center">
+                <select class="sheet-dropdown sheet-blue-color  sheet-inputfield" type="text" name="attr_charisma_progression">
+                    <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                    <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                    <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                    <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                    <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                    <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                    <option style="color:#278bce;background:#000000;">5,5,5,5</option>
+                </select>
+                <span class="sheet-red-color sheet-center" title="This should equal the level of Attribute minus the bonuses, just the points."> To Do </span>
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_body_discipline_cha" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_telekinesis_cha_aug" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_psi_cause" value="0" style="width: 3em; text-align: center">
+                <input class="sheet-inputfield sheet-blue-color"  type="number" name="attr_quirk_charisma_bonus" value="0" style="width: 3em; text-align: center">
+            </div>
+        </div>
+    </div>                                    
+</div>
+        
+<!-- Start of Psionics Edit Sheet -->
+
+<div class="sheet-editpsionics">
+    <h3 style="grid-column: 1 / -1; text-align:center; padding-top: 10px;">PSIONICS EDIT PAGE</h3>     <!-- PAGE HEADER BELOW BUTTONS -->           
+    <!-- Add your HTML HERE -->    
+     <div class="sheet-edit-psionics-grid-section">                      
+            <div class="sheet-block edit-life-energy" style="text-align: center;">                
+                <h3 style="grid-column: 1 / -1; padding-top: 5px;">LIFE CORD</h3>
+                <span class="sheet-blue-color" >Life Energy</span class="sheet-blue-color" />
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Your Current Life Energy" type="number" name="attr_life_energy" value="attr_life_energy" style="width:5em;" />
+                <span class="sheet-red-color">/</span>                
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Your Maximum Life Energy" type="number" name="attr_life_energy_full" value="" style="width:5em;" />
+                <input class="sheet-inputfield52" style="background-color: #282828; border:#282828" disabled>
+                <span class="sheet-blue-color" >RE</span>
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Your Current Raw Energy Output" type="number" name="attr_raw_energy" value="floor(@{life_energy} / 100)" disabled />                                
+
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Your Sphere of Influence" type="number" name="attr_sphere_of_influence" value="floor((@{life_energy} / 100)+3)" disabled />
+                <span class="sheet-blue-color" >Sphere</span>
+                <input class="sheet-inputfield52" style="background-color: #282828; border:#282828" disabled>
+                <span class="sheet-blue-color" >Regen %</span class="sheet-blue-color" />
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Percentage your LC regenerates (of max)" type="number" name="attr_life_energy_regen_percent" value="10" />                
+                                                
+                <input class="sheet-inputfieldlc sheet-blue-color" title="Actual Life Energy per day" type="number" name="attr_life_energy_regenerated" value="(@{life_energy_full}/100)*(@{life_energy_regen_percent})" disabled /> 
+                <span class="sheet-blue-color" >/day</span class="sheet-blue-color" />
+            </div>                    
+
+            <div class="edit-psi-buttons">                          
+                    <button class="sheet-button-roll2" type="action" name="act_body-discipline" >Body Disc</button>           
+                    <button class="sheet-button-roll2" type="action" name="act_causation" >Causation</button>
+                    <button class="sheet-button-roll2" type="action" name="act_clairvoyance" >Clairvoyance</button>
+                    <button class="sheet-button-roll2" type="action" name="act_deflection" >Deflection</button>
+                    <button class="sheet-button-roll2" type="action" name="act_domination" >Domination</button>  
+                    <button class="sheet-button-roll2" type="action" name="act_energy-communion" >E.Comm</button>                           
+                    <button class="sheet-button-roll2" type="action" name="act_molecular-alteration" >Molecular</button>
+                    <button class="sheet-button-roll2" type="action" name="act_pyrokinesis" >Pyrokinesis</button>
+                    <button class="sheet-button-roll2" type="action" name="act_subatomic-alteration" >Subatomic</button>
+                    <button class="sheet-button-roll2" type="action" name="act_telekinesis" >Telekinesis</button>  
+                    <button class="sheet-button-roll2" type="action" name="act_anti-psionics" >Anti Psi</button>  
+            </div>
+            <div class="edit-psi sheet-block">
+                <input type="hidden" class="sheet-tabstoggle1" name="attr_psiTab"  value="" />
+                <div class="sheet-body-discipline">
+                    <div class="sheet-edit-psionics-grid-section edit-psi-bd sheet-center" display="grid" style="grid-template-columns:  6em 3.5em 3.5em 3.5em 3.5em 3.5em 4.5em 3.5em 3.5em;">
+                        <span class="sheet-gold-color" style="grid-column: 1 / 13; text-align: center;"> Body Discipline </span>                        
+                        <div class="sheet-center" style="text-align: center; display: grid; column-gap: 4px; grid-template-columns: 75px 75px 75px 75px 75px 75px 75px 75px 75px 45px 45px 60px 60px; grid-auto-rows:28px;" > <!-- 13 Columns -->                                                        
+                            
+                            <span class="sheet-blue-color sheet-center">Psi Level</span>                            
+                            <span disabled></span>
+                            <span class="sheet-blue-color sheet-center">Points</span>
+                            <input class="sheet-inputfield52 sheet-blue-color sheet-center" name="attr_body_discipline_points" type="number">
+                            <select class="skill-progression sheet-dorpdown sheet-blue-color sheet-inputfield" type="text" name="attr_skillprogression" style="width: 75px;">
+                                <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                                <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                                <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                                <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                                <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                                <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>   
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>                                                 
+                            </select>                            
+                            <span disabled></span>                            
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                        <!-- Boosting Headers -->    
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">BOOST</span>
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">RE</span>                        
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">STR</span>
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">DEX</span>                            
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">CON</span>
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Art</span>
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Misc</span>
+                            <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Quirk</span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            
+                        <!-- TOTALS -->
+                        <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Focus Skill}} {{Focus Roll=[[1d20+@{focus}]]}} {{?{Roll|Public, |To DM,/w gm} Rolling ?{Number|1}?{Type|D4|D6|D8|D10|D12|D20|D100} + ?{Modifier|0}: [[ ?{Number}?{Type}+?{Modifier} ]]}}" style="font-size:smaller;">Focus</button>
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_re" value="0" type="number" />                            
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_str" value="floor(@{psi_body_discipline_boost_re}/2)+@{psi_body_discipline_boost_artifact}+@{psi_body_discipline_boost_misc}+@{psi_body_discipline_boost_quirk}" disabled/>
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_dex" value="floor(@{psi_body_discipline_boost_re}/3)+@{psi_body_discipline_boost_artifact}+@{psi_body_discipline_boost_misc}+@{psi_body_discipline_boost_quirk}" disabled/>
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_con" value="floor(@{psi_body_discipline_boost_re}/5)+@{psi_body_discipline_boost_artifact}+@{psi_body_discipline_boost_misc}+@{psi_body_discipline_boost_quirk}" disabled/>
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_artifact" value="0" type="number" />
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_misc" value="0" type="number" />
+                            <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_boost_quirk" value="0" type="number" />
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                            <span disabled></span>
+                        
+
+                        <!-- Healing Headers -->    
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">HEAL</span>
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">FOCUS</span>
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">LE</span>                                                
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">D. Level</span>                  
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">DICE</span>                   
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Art</span>
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Misc</span>
+                        <span class="sheet-center sheet-gold-color" style="padding-left:0px;">Quirk</span>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>                        
+                        
+                        
+                    <!-- TOTALS -->
+                        <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Body Discipline Heal}} {{Heal Roll=[[@{psi_body_discipline_heal_dice}+@{constitution}]]}}" style="font-size:smaller;" title="Rolls your Heal Dice + Constituion ">Heal</button>    
+                        <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Body Discipline Heal}} {{Focus Roll=[[1d20+@{focus}]]}} {{Focus LE=?{Roll|Public, |To DM,/w gm} ?{Number|1}?{Type|D4|D6|D8|D10|D12|D20|D100} + ?{Modifier|0}: [[ ?{Number}?{Type}+?{Modifier} ]]}}" style="font-size:smaller;" title="Determines LE Burned for Healing. Matched to Dice Chart for DICE field.">Focus</button>    
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_heal_le" value="2" type="number" title="For every 2LE increases level on Dice Progression Chart. (+misc, +artifact, +quirks)" />                            
+                        <span class="sheet-center sheet-blue-color" name="attr_psi_body_discipline_heal_level" value="attr_psi_body_discipline_heal_level" title="Compare to Dice Chart for Dice Roll."/>                          
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_heal_dice" type="text" title="Where you put the Dice from Dice Chart based on D.Level."/>                                                
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_heal_artifact" value="0" type="number" title="Artifact Heal bonus. Increases level on Dice Chart."/>
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_heal_misc" value="0" type="number" title="Misc Heal Bonus (Tech item?). Increases level on Dice Chart."/>
+                        <input class="sheet-inputfield sheet-center sheet-blue-color" style="width:75px;" name="attr_psi_body_discipline_heal_quirk" value="0" type="number" title="Quirk Heal Bonus. Increases level on Dice Chart."/>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>
+                        <span disabled></span>
+                    </div>
+                    <div class="edit-psi edit-repeating-bd-skills" display="grid" >
+                        <fieldset class="repeating_bd" >                                                                   
+                            <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_body_discipline_skill_name_1" type="text" value="BD Skill Name" style="width: 75px;" />
+                            <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_body_discipline_skill_name_description_1" type="text" value="BD Skill Description"  style="width: 75px;"/>
+                            <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_body_discipline_skill_name_description_2" type="text" value="BD Skill Description"  style="width: 75px;"/>
+                            <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_body_discipline_skill_name_description_3" type="text" value="BD Skill Description"  style="width: 75px;"/>
+                        </fieldset>
+                    </div>
+
+
+                    </div>
+                </div>
+                <div class="sheet-causation">                                        
+                    <div class="sheet-edit-psionics-grid-section edit-psi-causation sheet-center">
+                        <span class="sheet-gold-color" style="grid-column: 1 / 7; text-align: center;"> Causation </span>                        
+                        <div class="sheet-center edit-psi-causation" >
+                            <span class="sheet-blue-color sheet-center">Psi Level</span>                            
+                            <span class="sheet-yellow-color" disabled>CALC POINTS FROM Prog</span>
+                            <span class="sheet-blue-color sheet-center">Points</span>
+                            <input class="sheet-inputfield52 sheet-blue-color sheet-center" name="attr_causation_points" type="number">
+                            <span class="sheet-blue-color" disabled>Prog</span>
+                            <select class="skill-progression sheet-dorpdown sheet-blue-color sheet-inputfield" type="text" name="attr_skillprogression" style="width: 75px;">
+                                <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                                <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                                <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                                <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                                <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                                <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>   
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>                                
+                            </select>           
+                        
+                        <div class="edit-psi edit-repeating-causation-quirks"  display="grid" >
+                            <fieldset class="repeating_quirks" >                                                                   
+                                <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_quirk" type="text" value="Quirk Name" style="width: 125px;" />
+                                <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_quirkdesc" type="text" value="Quirk Description"  style="width: 500px;"/>
+                            </fieldset>
+                        </div>     
+                        </div>
+                    </div>                                                    
+                </div>
+                <div class="sheet-clairvoyance">                    
+                    <div class="sheet-edit-psionics-grid-section edit-psi-clairvoyance sheet-center">
+                        <span class="sheet-gold-color" style="grid-column: 1 / 10; text-align: center;"> CLAIRVOYANCE </span>                        
+                        
+                            <span class="sheet-blue-color sheet-center">Psi Level</span>                            
+                            <input class="sheet-inputfield sheet-yellow-color" type="number" name="attr_psi_clairvoyance" value="" />
+                            <span class="sheet-blue-color sheet-center">Points</span>
+                            <input class="sheet-inputfield52 sheet-blue-color sheet-center" name="attr_clairvoyance_points" type="number">
+                            <span class="sheet-blue-color" disabled>Prog</span>
+                            <select class="skill-progression sheet-dorpdown sheet-blue-color sheet-inputfield" type="text" name="attr_skillprogression" style="width: 75px;">
+                                <option style="color:#278bce;background:#000000;" selected>1,2,3...</option>
+                                <option style="color:#278bce;background:#000000;">4,5,6,7</option>
+                                <option style="color:#278bce;background:#000000;">3,4,5,6</option>   
+                                <option style="color:#278bce;background:#000000;">2,3,4,5</option>
+                                <option style="color:#278bce;background:#000000;">1,2,3,4</option>                                                                        
+                                <option style="color:#278bce;background:#000000;">3,3,3,3</option>                
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>   
+                                <option style="color:#278bce;background:#000000;">5,5,5,5</option>                                
+                            </select>       
+                            <span class="sheet-blue-color sheet-center">Aware +</span>
+                            <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_psi_clairvoyance_awareness_bonus" value="floor(@{psi_clairvoyance}/2)" type="number" disabled/>
+                            <span class="sheet-blue-color sheet-center">HP +</span>
+                            <input class="sheet-inputfield sheet-blue-color sheet-center" name="attr_psi_clairvoyance_awareness_bonus" value="floor(@{psi_clairvoyance}*5)" type="number" disabled/>
+                            
+                            
+
+                            
+                            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Body Discipline Heal}} {{Heal Roll=[[@{psi_body_discipline_heal_dice}+@{constitution}]]}}" style="font-size:smaller;" title="Rolls your Heal Dice + Constituion ">Heal</button>    
+                            <button class="sheet-button-roll"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Body Discipline Heal}} {{Focus Roll=[[1d20+@{focus}]]}} {{Focus LE=?{Roll|Public, |To DM,/w gm} ?{Number|1}?{Type|D4|D6|D8|D10|D12|D20|D100} + ?{Modifier|0}: [[ ?{Number}?{Type}+?{Modifier} ]]}}" style="font-size:smaller;" title="Determines LE Burned for Healing. Matched to Dice Chart for DICE field.">Focus</button>    
+                        
+                        <div class="edit-psi edit-repeating-clairvoyance-quirks"  display="grid" >
+                            <fieldset class="repeating_quirks" >                                                                   
+                                <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_clairvoyance_skill_name_1" type="text" value="Quirk Name" style="width: 75px;" />
+                                <input class="sheet-inputfield sheet-center sheet-red-color" name="attr_psi_clairvoyance_skill_name_1_" type="text" value="Quirk Description"  style="width: 500px;"/>
+                            </fieldset>
+                        </div>             
+                    </div>
+                </div>                                           
+                
+                
+                <div class="sheet-deflection">                    
+                    <span class="sheet-gold-color"> Deflection 123 </span>
+                </div>
+                <div class="sheet-domination">                    
+                    <span class="sheet-gold-color"> Domination 123 </span>
+                </div>
+                <div class="sheet-energy-communion">                    
+                    <span class="sheet-gold-color"> Energy Communion 123 </span>
+                </div>
+                <div class="sheet-molecular-alteration">                    
+                    <span class="sheet-gold-color"> Molecular Alteration 123 </span>
+                </div>
+                <div class="sheet-pyrokinesis">                    
+                    <span class="sheet-gold-color"> Pyrokinesis 123 </span>
+                </div>
+                <div class="sheet-subatomic-alteration">                    
+                    <span class="sheet-gold-color"> Subatomic Alteration 123 </span>
+                </div>
+                <div class="sheet-telekinesis">                    
+                    <span class="sheet-gold-color"> Telekinesis 123 </span>
+                </div>
+                <div class="sheet-anti-psionics">                    
+                    <span class="sheet-gold-color"> Anti Psionics 123 </span>
+                </div>                
+            </div>
+    </div>
+</div>   
+
+    <!-- END OF Psi Edit SHEET -->
+
+</div> <!-- End of 1st Div -->
+
+
+<script type="text/worker">
+
+    /* This controls the button functions to switch PAGE tabs */
+    
+    const buttonlist = ["character","equipped","editskills","inventory","editcharacter","editpsionics"];
+    buttonlist.forEach(button => {
+        on(`clicked:${button}`, function() {
+            setAttrs({
+                sheetTab: button
+            });
+        });
+    });
+
+/* This controls the button functions to switch Psionic tabs */
+
+    const psibuttonlist = ["body-discipline","causation","clairvoyance","deflection","domination","energy-communion","molecular-alteration","pyrokinesis","subatomic-alteration","telekinesis","anti-psionics"];
+    psibuttonlist.forEach(button => {
+        on(`clicked:${button}`, function() {
+            setAttrs({
+                psiTab: button
+            });
+        });
+    });
+
+
+
+    function updateMovement() {
+        getAttrs(['dexterity', 'raw_energy'], function(values) {
+            let dex = parseInt(values.dexterity) / 5 || 1;                
+            let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;
+            let move = Math.floor(dex / 5) + re || 1;
+            setAttrs({ 
+                hero_movement : move 
+            });
+        });
+        }
+
+    function updateActionPoints() {
+        getAttrs(['dexterity', 'raw_energy'], function(values) {
+            let dex = parseInt(values.dexterity) / 5 || 1;                
+            /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1; */
+            let points = Math.floor(dex) ;        
+            setAttrs({ 
+                actions : points 
+            });
+        });
+        }
+        
+        function updateMentalActionPoints() {
+        getAttrs(['intelligence'], function(values) {            
+            let int = parseInt(values.intelligence) / 5 || 1;            
+            /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */
+            let points = Math.floor(int) ;        
+            setAttrs({ 
+                mentalactions : points 
+            });
+        });
+        }
+                            /* UPDATE ATTRIBUTES */
+
+        function updateStrength() {
+            getAttrs(['racial_str', 'strength_cyb', 'strength_gen', 'strength_art', 'strength_misc', 'strength_temp'], function(values) {            
+                let r = parseInt(values.racial_str) || 0;
+                let c = parseInt(values.strength_cyb) || 0;
+                let g = parseInt(values.strength_gen) || 0;
+                let a = parseInt(values.strength_art) || 0;
+                let m = parseInt(values.strength_misc) || 0;
+                let t = parseInt(values.strength_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    strength :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_str change:strength_cyb change:strength_gen change:strength_art change: strength_misc change:strength_temp', function(eventInfo) {
+        getAttrs(['racial_str', 'strength_cyb', 'strength_gen', 'strength_art', 'strength_misc', 'strength_temp'], function(values) {       
+            let r = parseInt(values.racial_str) || 0;
+            let c = parseInt(values.strength_cyb) || 0;
+            let g = parseInt(values.strength_gen) || 0;
+            let a = parseInt(values.strength_art) || 0;
+            let m = parseInt(values.strength_misc) || 0;
+            let t = parseInt(values.strength_temp) || 0;   
+            setAttrs({ 
+                strength : r+c+g+a+m+t
+            });
+        });
+        });
+
+        function updateDexterity() {
+            getAttrs(['racial_dex','dexterity_cyb', 'dexterity_gen', 'dexterity_art', 'dexterity_misc', 'dexterity_temp'], function(values) {            
+                let r = parseInt(values.racial_dex) || 0;
+                let c = parseInt(values.dexterity_cyb) || 0;
+                let g = parseInt(values.dexterity_gen) || 0;
+                let a = parseInt(values.dexterity_art) || 0;
+                let m = parseInt(values.dexterity_misc) || 0;
+                let t = parseInt(values.dexterity_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    dexterity :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_dex change:dexterity_cyb change:dexterity_gen change:dexterity_art change: dexterity_misc change:dexterity_temp', function(eventInfo) {
+        getAttrs(['racial_dex', 'dexterity_cyb', 'dexterity_gen', 'dexterity_art', 'dexterity_misc', 'dexterity_temp'], function(values) {       
+            let r = parseInt(values.racial_dex) || 0;
+            let c = parseInt(values.dexterity_cyb) || 0;
+            let g = parseInt(values.dexterity_gen) || 0;
+            let a = parseInt(values.dexterity_art) || 0;
+            let m = parseInt(values.dexterity_misc) || 0;
+            let t = parseInt(values.dexterity_temp) || 0;   
+            setAttrs({ 
+                dexterity : r+c+g+a+m+t
+            });
+        });
+        });
+
+        function updateConstitution() {
+            getAttrs(['racial_con', 'constitution_cyb', 'constitution_gen', 'constitution_art', 'constitution_misc', 'constitution_temp'], function(values) {            
+                let r = parseInt(values.racial_con) || 0;
+                let c = parseInt(values.constitution_cyb) || 0;
+                let g = parseInt(values.constitution_gen) || 0;
+                let a = parseInt(values.constitution_art) || 0;
+                let m = parseInt(values.constitution_misc) || 0;
+                let t = parseInt(values.constitution_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    constitution :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_con change:constitution_cyb change:constitution_gen change:constitution_art change: constitution_misc change:constitution_temp', function(eventInfo) {
+        getAttrs(['racial_con', 'constitution_cyb', 'constitution_gen', 'constitution_art', 'constitution_misc', 'constitution_temp'], function(values) {       
+            let r = parseInt(values.racial_con) || 0;
+            let c = parseInt(values.constitution_cyb) || 0;
+            let g = parseInt(values.constitution_gen) || 0;
+            let a = parseInt(values.constitution_art) || 0;
+            let m = parseInt(values.constitution_misc) || 0;
+            let t = parseInt(values.constitution_temp) || 0;   
+            setAttrs({ 
+                constitution : r+c+g+a+m+t
+            });
+        });
+        });
+
+        function updateIntelligence() {
+            getAttrs(['racial_int', 'intelligence_cyb', 'intelligence_gen', 'intelligence_art', 'intelligence_misc', 'intelligence_temp'], function(values) {            
+                let r = parseInt(values.racial_int) || 0;
+                let c = parseInt(values.intelligence_cyb) || 0;
+                let g = parseInt(values.intelligence_gen) || 0;
+                let a = parseInt(values.intelligence_art) || 0;
+                let m = parseInt(values.intelligence_misc) || 0;
+                let t = parseInt(values.intelligence_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    intelligence :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_int change:intelligence_cyb change:intelligence_gen change:intelligence_art change: intelligence_misc change:intelligence_temp', function(eventInfo) {
+        getAttrs(['racial_int', 'intelligence_cyb', 'intelligence_gen', 'intelligence_art', 'intelligence_misc', 'intelligence_temp'], function(values) {       
+            let r = parseInt(values.racial_int) || 0;
+            let c = parseInt(values.intelligence_cyb) || 0;
+            let g = parseInt(values.intelligence_gen) || 0;
+            let a = parseInt(values.intelligence_art) || 0;
+            let m = parseInt(values.intelligence_misc) || 0;
+            let t = parseInt(values.intelligence_temp) || 0;   
+            setAttrs({ 
+                intelligence : r+c+g+a+m+t
+            });
+        });
+        });
+
+        function updateWisdom() {
+            getAttrs(['racial_wis', 'wisdom_cyb', 'wisdom_gen', 'wisdom_art', 'wisdom_misc', 'wisdom_temp'], function(values) {            
+                let r = parseInt(values.racial_wis) || 0;
+                let c = parseInt(values.wisdom_cyb) || 0;
+                let g = parseInt(values.wisdom_gen) || 0;
+                let a = parseInt(values.wisdom_art) || 0;
+                let m = parseInt(values.wisdom_misc) || 0;
+                let t = parseInt(values.wisdom_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    wisdom :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_wis change:wisdom_cyb change:wisdom_gen change:wisdom_art change: wisdom_misc change:wisdom_temp', function(eventInfo) {
+        getAttrs(['racial_wis', 'wisdom_cyb', 'wisdom_gen', 'wisdom_art', 'wisdom_misc', 'wisdom_temp'], function(values) {       
+            let r = parseInt(values.racial_wis) || 0;
+            let c = parseInt(values.wisdom_cyb) || 0;
+            let g = parseInt(values.wisdom_gen) || 0;
+            let a = parseInt(values.wisdom_art) || 0;
+            let m = parseInt(values.wisdom_misc) || 0;
+            let t = parseInt(values.wisdom_temp) || 0;   
+            setAttrs({ 
+                wisdom : r+c+g+a+m+t
+            });
+        });
+        });
+
+        function updateCharisma() {
+            getAttrs(['racial_cha', 'charisma_cyb', 'charisma_gen', 'charisma_art', 'charisma_misc', 'charisma_temp'], function(values) {            
+                let r = parseInt(values.racial_cha) || 0;
+                let c = parseInt(values.charisma_cyb) || 0;
+                let g = parseInt(values.charisma_gen) || 0;
+                let a = parseInt(values.charisma_art) || 0;
+                let m = parseInt(values.charisma_misc) || 0;
+                let t = parseInt(values.charisma_temp) || 0;            
+                /* let re = Math.floor(parseInt(values.raw_energy) / 100) || 1;      */                
+                setAttrs({ 
+                    charisma :  r+c+g+a+m+t
+                });
+            });
+            }
+    
+        on('change:racial_cha change:charisma_cyb change:charisma_gen change:charisma_art change: charisma_misc change:charisma_temp', function(eventInfo) {
+        getAttrs(['racial_cha', 'charisma_cyb', 'charisma_gen', 'charisma_art', 'charisma_misc', 'charisma_temp'], function(values) {       
+            let r = parseInt(values.racial_cha) || 0;
+            let c = parseInt(values.charisma_cyb) || 0;
+            let g = parseInt(values.charisma_gen) || 0;
+            let a = parseInt(values.charisma_art) || 0;
+            let m = parseInt(values.charisma_misc) || 0;
+            let t = parseInt(values.charisma_temp) || 0;   
+            setAttrs({ 
+                charisma : r+c+g+a+m+t
+            });
+        });
+        });
+
+    /* UPDATE HEALTH SECTION */
+
+    function updateNatHealth() {
+        getAttrs(['strength', 'constitution', 'cyb_misc_health', 'gen_misc_health', 'art_misc_health', 'misc_health', 'racial_hp_base'], function(values) {            
+            let s = parseInt(values.strength) || 0;
+            let c = parseInt(values.constitution) || 0;
+            let cy = parseInt(values.cyb_misc_health) || 0; 
+            let g = parseInt(values.gen_misc_health) || 0;
+            let a = parseInt(values.art_misc_health) || 0;
+            let m = parseInt(values.misc_health) || 0;         
+            let r = parseInt(values.racial_hp_base) || 0;                  
+            setAttrs({ 
+                nat_health :  Math.floor(s*c)+cy+g+a+m+r
+            });
+        });
+        }
+
+    on('change:strength change:constitution change:cyb_misc_health change:gen_misc_health change:art_misc_health change:misc_health', function(eventInfo) {
+        getAttrs(['strength', 'constitution', 'cyb_misc_health', 'gen_misc_health', 'art_misc_health', 'misc_health', 'racial_hp_base'], function(values) {       
+            let s = parseInt(values.strength) || 0;
+            let c = parseInt(values.constitution) || 0;
+            let cy = parseInt(values.cyb_misc_health) || 0; 
+            let g = parseInt(values.gen_misc_health) || 0;
+            let a = parseInt(values.art_misc_health) || 0;
+            let m = parseInt(values.misc_health) || 0;                            
+            let r = parseInt(values.racial_hp_base) || 0;                            
+            setAttrs({ 
+                nat_health :  Math.floor(s*c)+cy+g+a+m+r
+            });
+        });
+        });
+
+    function updateNatPenPlus() {
+        getAttrs(['constitution', 'cyb_misc_pen_plus', 'gen_misc_pen_plus', 'art_misc_pen_plus', 'misc_pen_plus', 'psi_body_discipline_pen_plus'], function(values) {                       
+            let c = parseInt(values.constitution) || 0;
+            let cy = parseInt(values.cyb_misc_pen_plus) || 0; 
+            let g = parseInt(values.gen_misc_pen_plus) || 0;
+            let a = parseInt(values.art_misc_pen_plus) || 0;
+            let m = parseInt(values.misc_pen_plus) || 0;                            
+            let p = parseInt(values.psi_body_discipline_pen_plus) || 0;
+            setAttrs({ 
+                nat_pen_plus :  Math.floor(c/10)+cy+g+a+m
+            });
+        });
+        }
+        on('change:constitution change:cyb_misc_pen_plus change:gen_misc_pen_plus change:art_misc_pen_plus change:misc_pen_plus change:psi_body_discipline_pen_plus', function(eventInfo) {
+            getAttrs(['constitution', 'cyb_misc_pen_plus', 'gen_misc_pen_plus', 'art_misc_pen_plus', 'misc_pen_plus', 'psi_body_discipline_pen_plus'], function(values) {                       
+                    let c = parseInt(values.constitution) || 0;
+                    let cy = parseInt(values.cyb_misc_pen_plus) || 0; 
+                    let g = parseInt(values.gen_misc_pen_plus) || 0;
+                    let a = parseInt(values.art_misc_pen_plus) || 0;
+                    let m = parseInt(values.misc_pen_plus) || 0;                            
+                    let p = parseInt(values.psi_body_discipline_pen_plus) || 0;
+                    setAttrs({ 
+                        nat_pen_plus :  Math.floor(c/10)+cy+g+a+m
+                });
+            });
+            });  
+
+    function updateNatDmgRed() {
+        getAttrs(['constitution', 'cyb_misc_dmg_red', 'gen_misc_dmg_red', 'art_misc_dmg_red', 'misc_dmg_red'], function(values) {                       
+            let c = parseInt(values.constitution) || 0;
+            let cy = parseInt(values.cyb_misc_dmg_red) || 0; 
+            let g = parseInt(values.gen_misc_dmg_red) || 0;
+            let a = parseInt(values.art_misc_dmg_red) || 0;
+            let m = parseInt(values.misc_dmg_red) || 0;                                        
+            setAttrs({ 
+                nat_dmg_red :  Math.floor(c/5)+cy+g+a+m
+            });
+        });
+        }
+        on('change:constitution change:cyb_misc_dmg_red change:gen_misc_dmg_red change:art_misc_dmg_red change:misc_dmg_red', function(eventInfo) {
+            getAttrs(['constitution', 'cyb_misc_dmg_red', 'gen_misc_dmg_red', 'art_misc_dmg_red', 'misc_dmg_red'], function(values) {                       
+                let c = parseInt(values.constitution) || 0;
+                let cy = parseInt(values.cyb_misc_dmg_red) || 0; 
+                let g = parseInt(values.gen_misc_dmg_red) || 0;
+                let a = parseInt(values.art_misc_dmg_red) || 0;
+                let m = parseInt(values.misc_dmg_red) || 0;                                        
+                setAttrs({ 
+                    nat_dmg_red :  Math.floor(c/5)+cy+g+a+m
+             });
+        });
+        });   
+
+    function updateNatDmgRed() {
+        getAttrs(['constitution', 'cyb_misc_regen', 'gen_misc_regen', 'art_misc_regen', 'misc_regen', 'psi_body_discipline_regen'], function(values) {                       
+            let c = parseInt(values.constitution) || 0;
+            let cy = parseInt(values.cyb_misc_regen) || 0; 
+            let g = parseInt(values.gen_misc_regen) || 0;
+            let a = parseInt(values.art_misc_regen) || 0;
+            let m = parseInt(values.misc_regen) || 0;                                        
+            let p = parseInt(values.psi_body_discipline_regen) || 0;                                        
+            setAttrs({ 
+                nat_regen :  Math.floor(c/10)+cy+g+a+m+p
+            });
+        });
+        }
+        on('change:constitution change:cyb_misc_regen change:gen_misc_regen change:art_misc_regen change:misc_regen change:psi_body_discipline_regen', function(eventInfo) {
+            getAttrs(['constitution', 'cyb_misc_regen', 'gen_misc_regen', 'art_misc_regen', 'misc_regen', 'psi_body_discipline_regen'], function(values) {                       
+                let c = parseInt(values.constitution) || 0;
+                let cy = parseInt(values.cyb_misc_regen) || 0; 
+                let g = parseInt(values.gen_misc_regen) || 0;
+                let a = parseInt(values.art_misc_regen) || 0;
+                let m = parseInt(values.misc_regen) || 0;                                        
+                let p = parseInt(values.psi_body_discipline_regen) || 0;                                        
+                setAttrs({ 
+                    nat_regen :  Math.floor(c/10)+cy+g+a+m+p
+                });
+        });
+        });   
+
+        
+        
+        /* PSIONICS */
+
+        function updateBodyDisciplineHeal() {
+            getAttrs(['psi_body_discipline_heal_le', 'psi_body_discipline_heal_artifact', 'psi_body_discipline_heal_misc', 'psi_body_discipline_heal_quirk'], function(values) {                       
+                let le = parseInt(values.psi_body_discipline_heal_le) || 0;
+                let a = parseInt(values.psi_body_discipline_heal_artifact) || 0; 
+                let m = parseInt(values.psi_body_discipline_heal_misc) || 0;
+                let q = parseInt(values.psi_body_discipline_heal_quirk) || 0;                
+                setAttrs({ 
+                    psi_body_discipline_heal_level :  Math.floor(le/2)+a+m+q
+                });
+            });
+            }
+            on('change:psi_body_discipline_heal_le change:psi_body_discipline_heal_artifact change:psi_body_discipline_heal_misc change:psi_body_discipline_heal_quirk', function(eventInfo) {
+                getAttrs(['psi_body_discipline_heal_le', 'psi_body_discipline_heal_artifact', 'psi_body_discipline_heal_misc', 'psi_body_discipline_heal_quirk'], function(values) {                       
+                    let le = parseInt(values.psi_body_discipline_heal_le) || 0;
+                    let a = parseInt(values.psi_body_discipline_heal_artifact) || 0; 
+                    let m = parseInt(values.psi_body_discipline_heal_misc) || 0;
+                    let q = parseInt(values.psi_body_discipline_heal_quirk) || 0;                
+                    setAttrs({ 
+                        psi_body_discipline_heal_level :  Math.floor(le/2)+a+m+q
+                    });
+            });
+            });   
+
+
+     /* Watching for when sheet is opened and initializing any empty numerical values */
+     
+        /* 
+            The purpose of this watcher is to initialize all the 
+            various important attributes, and thus avoid the complication of trying to 
+            do something with something that is undefined. Other places of the code
+            will try to have safeguards against this, but this is just another layer
+            of protection in case I miss something. 
+        */ 
+        
+        // INITIALIZING NUMERIAL ATTRIBUTES //
+        /* on('sheet:opened', function(values) {   
+        let listOfNumericalAttributes = new Object();
+        
+        // Core attributes score summed up
+        listOfNumericalAttributes["strength"] = ["racial_str", "cyb_str", "gene_str", "misc_str", "psi_body_discipline_str", "psi_telekinesis_str_augment", "strength_points"];
+        listOfNumericalAttributes["dexterity"] = ["racial_dex", "cyb_dex", "gene_dex", "misc_dex", "psi_body_discipline_dex", "psi_telekinesis_dex_augment", "dexterity_points"];
+        listOfNumericalAttributes["constitution"] =["racial_con", "cyb_con", "gene_con", "misc_con", "psi_body_discipline_con", "psi_telekinesis_con_augment", "constitution_points"];
+        listOfNumericalAttributes["intelligence"] = ["racial_int", "cyb_int", "gene_int", "artifact_int", "misc_int", "intelligence_points"];
+        listOfNumericalAttributes["wisdom"] = ["racial_wis", "cyb_wis", "gene_wis", "artifact_wis", "misc_wis", "wisdom_points"];
+        listOfNumericalAttributes["charisma"] = ["racial_cha", "cyb_cha", "gene_cha", "artifact_cha", "misc_cha", "charisma_points"];
+        
+        
+        //Psionics level equals....
+        listOfNumericalAttributes["life_energy"] = ["life_energy", "artifact_life_energy"];
+        listOfNumericalAttributes["raw_energy"] = ["raw_energy", "artifact_raw_energy"];
+        listOfNumericalAttributes["psi_body_discipline"] = ["psi_body_discipline_artifact", "psi_body_discipline_misc", "psi_body_discipline_points"];
+        listOfNumericalAttributes["psi_causation"] = ["psi_causation_artifact", "psi_causation_misc", "psi_causation_points"];
+        listOfNumericalAttributes["psi_clairvoyance"] = ["psi_clairvoyance_artifact", "psi_clairvoyance_misc", "psi_clairvoyance_points"];
+        listOfNumericalAttributes["psi_deflection"] = ["psi_deflection_artifact", "psi_deflection_misc", "psi_deflection_points"];
+        listOfNumericalAttributes["psi_domination"] = ["psi_domination_artifact", "psi_domination_misc", "psi_domination_points"];
+        listOfNumericalAttributes["psi_energy_communion"] = ["psi_energy_communion_artifact", "psi_energy_communion_misc", "psi_energy_communion_points"];
+        listOfNumericalAttributes["psi_molecular_alteration"] = ["psi_molecular_alteration_artifact", "psi_molecular_alteration_misc", "psi_molecular_alteration_points"];
+        listOfNumericalAttributes["psi_pyrokinesis"] = ["psi_pyrokinesis_artifact", "psi_pyrokinesis_misc", "psi_pyrokinesis_points"];
+        listOfNumericalAttributes["psi_subatomic_alteration"] = ["psi_subatomic_alteration_artifact", "psi_subatomic_alteration_misc", "psi_subatomic_alteration_points"];
+        listOfNumericalAttributes["psi_telekinesis"] = ["psi_telekinesis_artifact", "psi_telekinesis_misc", "psi_telekinesis_points"];
+        listOfNumericalAttributes["psi_anti_psionics"] = ["psi_anti_psionics_artifact", "psi_anti_psionics_misc", "psi_anti_psionics_points"];
+        
+        // Education
+        listOfNumericalAttributes["biology"] = ["cyb_biology", "psi_causation", "biology_misc", "biology_points"];
+        listOfNumericalAttributes["business"] = ["cyb_business", "psi_causation", "business_misc", "business_points"];
+        listOfNumericalAttributes["chemistry"] = ["cyb_chemistry", "psi_causation", "chemistry_misc", "chemistry_points"];
+        listOfNumericalAttributes["engineering"] = ["cyber_engineering", "psi_causation", "engineering_misc", "engineering_points"];
+        listOfNumericalAttributes["tronics"] = ["tronicsVI", "psi_causation", "tronics_misc", "tronics_points"];
+        listOfNumericalAttributes["law"] = ["cyb_law", "psi_causation", "law_misc", "law_points"];
+        listOfNumericalAttributes["physics"] = ["cyb_physics", "psi_causation", "physics_misc", "physics_points"];
+        listOfNumericalAttributes["programming"] = ["cyb_programming", "psi_causation", "programming_misc", "programming_points"];
+        
+        // General skills
+        listOfNumericalAttributes["acrobatics"] = ["cyb_acrobatics", "psi_causation", "acrobatics_misc", "acrobatics_points"];
+        listOfNumericalAttributes["athletics"] = ["cyb_athletics", "psi_causation", "athletics_misc", "athletics_points"];
+        listOfNumericalAttributes["awareness"] = ["awareness_cyb", "awareness_cause", "awareness_misc", "awareness_points"];
+        listOfNumericalAttributes["barter"] = ["barter_cyb", "barter_causation", "barter_misc", "barter_points"];
+        listOfNumericalAttributes["charm"] = ["charm_cyb", "charm_causation", "charm_misc", "charm_points"];
+        listOfNumericalAttributes["deception"] = ["deception_cyb", "deception_causation", "deception_misc", "deception_points"];
+        listOfNumericalAttributes["diplomacy"] = ["diplomacy_cyb", "diplomacy_causation", "diplomacy_misc", "diplomacy_points"];
+        listOfNumericalAttributes["fighter_pilot"] = ["fighterPilot_cyb", "fighterPilot_causation", "fighterPilot_misc", "fighter_pilot_points"];
+        listOfNumericalAttributes["focus"] = ["focus_cyb", "focus_causation", "focus_misc", "focus_points"];
+        listOfNumericalAttributes["forgery"] = ["forgery_cyb", "forgery_causation", "forgery_misc", "forgery_points"];
+        listOfNumericalAttributes["gatherInfo"] = ["gather_info_cyb", "gather_info_causation", "gather_info_misc", "gather_info_points"];
+        listOfNumericalAttributes["insight"] = ["insight_cyb", "insight_causation", "insight_misc", "insight_points"];
+        listOfNumericalAttributes["intimidate"] = ["intimidate_cyb", "intimidate_causation", "intimidate_misc", "intimidate_points"];
+        listOfNumericalAttributes["investigation"] = ["investigation_cyb", "investigation_causation", "investigation_misc", "investigation_points"];
+        listOfNumericalAttributes["medic"] = ["medic_cyb", "medic_causation", "medic_misc", "medic_points"];
+        listOfNumericalAttributes["melee"] = ["melee_cyb", "melee_causation", "melee_misc", "melee_points"];
+        listOfNumericalAttributes["perform"] = ["perform_cyb", "perform_causation", "perform_misc", "perform_points"];
+        listOfNumericalAttributes["pilot"] = ["pilot_cyb", "pilot_causation", "pilot_misc", "pilot_points"];
+        listOfNumericalAttributes["sleightOfHand"] = ["sleight_of_hand_cyb", "sleight_of_hand_causation", "sleight_of_hand_misc", "sleight_of_hand_points"];
+        listOfNumericalAttributes["stealth"] = ["stealth_cyb", "stealth_causation", "stealth_misc", "stealth_points"];
+        listOfNumericalAttributes["survival"] = ["survival_cyb", "survival_causation", "survival_misc", "survival_points"];
+                
+        let list = [];
+        
+        for (var key in listOfNumericalAttributes) {
+            
+            list.push(key);
+            if (listOfNumericalAttributes.hasOwnProperty(key)) {           
+                list = list.concat(listOfNumericalAttributes[key]);
+            } 
+        }      
+        getAttrs(list, function(values) {
+            list.forEach(attribute =>{
+                if (!values[attribute]) {
+                    setAttrs({ [attribute] : 0 });
+                }
+            });
+        });
+        });
+    */  /* Create a list of all the variables and populate it with the values above */
+        /*check if the property/key is defined in the object itself, not in parent */
+        /* Initialize all of the undefined values on the character sheet to 0. */
+
+    
+/* Racial watcher */
+/* // RACIAL TEMPLATES WORK!!!! DO NOT CHANGE UNLESS UPDATING NUMBERS // */
+on('change:race', function(eventInfo) {
+    /*
+        This watcher looks for changes in race, and set the primaryRacial 
+        attributes as appropriate. Again, this code could be made more compact, 
+        but I prefer readability over fewer lines of code. 
+    */
+   
+    getAttrs(['race'], function(values) {
+        if (values.race == "Human") {
+            setAttrs({ racial_str :               1 });
+            setAttrs({ racial_dex :               1 });
+            setAttrs({ racial_con :               1 });
+            setAttrs({ iracial_int :              1 });
+            setAttrs({ racial_wis :               1 });
+            setAttrs({ racial_cha :               1 });
+            setAttrs({ racial_str_max :          10 });
+            setAttrs({ racial_dex_max :          10 });
+            setAttrs({ racial_con_max :          10 });
+            setAttrs({ racial_hp_base :          10 });
+            setAttrs({ racial_le_base :          50 });
+        }    
+        else if (values.race == "Sollox") {
+            setAttrs({ racial_str :               0 });
+            setAttrs({ racial_dex :               2 });
+            setAttrs({ racial_con :               0 });
+            setAttrs({ iracial_int :              2 });
+            setAttrs({ racial_wis :               1 });
+            setAttrs({ racial_cha :               1 });
+            setAttrs({ racial_str_max :          15 });
+            setAttrs({ racial_dex_max :          10 });
+            setAttrs({ racial_con_max :          15 });
+            setAttrs({ racial_hp_base :          10 });
+            setAttrs({ racial_le_base :          25 });
+        }
+        else if (values.race == "Talaxian") {
+            setAttrs({ racial_str :               3 });
+            setAttrs({ racial_dex :               0 });
+            setAttrs({ racial_con :               3 });
+            setAttrs({ iracial_int :              0 });
+            setAttrs({ racial_wis :               0 });
+            setAttrs({ racial_cha :               0 });
+            setAttrs({ racial_str_max :          25 });
+            setAttrs({ racial_dex_max :           3 });
+            setAttrs({ racial_con_max :          15 });
+            setAttrs({ racial_hp_base :          30 });
+            setAttrs({ racial_le_base :          50 });
+        }
+        else if (values.race == "Thorn") {
+            setAttrs({ racial_str :              2 });
+            setAttrs({ racial_dex :              1 });
+            setAttrs({ racial_con :              3 });
+            setAttrs({ iracial_int :             0 });
+            setAttrs({ racial_wis :              0 });
+            setAttrs({ racial_cha :              0 });
+            setAttrs({ racial_str_max :         25 });
+            setAttrs({ racial_dex_max :          3 });
+            setAttrs({ racial_con_max :         15 });
+            setAttrs({ racial_hp_base :         30 });
+            setAttrs({ racial_le_base :         30 });
+        }
+        else {
+            setAttrs({ racial_str :              0 });
+            setAttrs({ racial_dex :              0 });
+            setAttrs({ racial_con :              0 });
+            setAttrs({ iracial_int :             0 });
+            setAttrs({ racial_wis :              0 });
+            setAttrs({ racial_cha :              0 });        
+            setAttrs({ racial_hp_base :         10 });
+            setAttrs({ racial_le_base :         25 });
+        }
+    });
+    });    
+/*
+    (() => {
+        const dieSizes = [4, 8, 10, 12, 20],
+          dieSizeMaxIndex = dieSizes.length - 1,
+          maxLevel = 256;
+        let baseDice = 0,
+          currentLevel = 1;
+      
+        for (let i=0; i<maxLevel; i++) {
+          const currentDieSizeIndex = (currentLevel-1) % dieSizes.length;
+          if (currentDieSizeIndex === dieSizeMaxIndex && currentLevel > 1) baseDice ++;
+          const baseRoll =
+            baseDice ? 
+              currentDieSizeIndex === dieSizeMaxIndex ?
+                `${baseDice}d${dieSizes[dieSizes.length-1]}` 
+                : `${baseDice}d${dieSizes[dieSizes.length-1]} + `
+              : '',
+            extraRoll = currentDieSizeIndex === dieSizeMaxIndex ? `` : `1d${dieSizes[currentDieSizeIndex]}`;
+          console.log(`Level ${currentLevel}: ${baseRoll}${extraRoll}`);
+          currentLevel++;
+        }
+      })();
+*/
+</script>
+
