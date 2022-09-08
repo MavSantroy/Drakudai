@@ -83,8 +83,121 @@
 </div>
 
 <div class="sheet-equipped">
-    <h3>Equipped Weapons and Armor Stats</h3>
-    <span class="sheet-blue-color">Equipped Armor and Weapons</span> 
+    <div class="sheet-equipped-grid">
+        <div class="equipped-header">
+            <span> Equipped Equipment </span>
+        </div>
+        <div class="equipped-armor sheet-block"> 
+            <h3>Armor</h3>  
+            <fieldset class="repeating_equipped-armor">
+                <input class="sheet-inputfield52" name="attr_equipped_armor_name" value="" type="text" style="width: 75px;" >
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>   
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>            
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>            
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>    
+            </fieldset>
+        </div>
+        <div class="equipped-weapons sheet-block">
+            <h3>Weapons</h3> 
+            <input class="sheet-inputfield52 sheet-blue-color" value="Name"  style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="Dmg"  style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="Dmg+"  style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="Mult">
+            <input class="sheet-inputfield52 sheet-blue-color" value="P+">
+            <input class="sheet-inputfield52 sheet-blue-color" value="Range">
+            <input class="sheet-inputfield52 sheet-blue-color" value="RoF" style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="RF"  style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="Ammo"  style="width: 75px;">
+            <input class="sheet-inputfield52 sheet-blue-color" value="+TH" >
+            <input class="sheet-inputfield52 sheet-blue-color" value="T.L." >
+
+            <fieldset class="repeating_equipped-weapons">
+                <input class="sheet-inputfield52" name="attr_equipped_weapon_name" value="" type="text" style="width: 75px;" >
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>                
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" >
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>   
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <button class="sheet-button-rollw"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Strength}} {{Strength Roll=[[1d20+@{strength}]]}}"></button>            
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" disabled>
+                <input class="sheet-inputfield52" disabled>                
+                <input class="sheet-inputfield52" disabled>                
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                <input class="sheet-inputfield52" disabled>                
+                <input class="sheet-inputfield52" disabled>                
+            </fieldset>          
+        </div>
+        <div class="equipped-artifacts sheet-block">
+            <h3>Artifacts</h3>           
+            <fieldset class="repeating_equipped-artifacts">
+                <input class="sheet-inputfield52 sheet-blue-color" value="Name"  style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-blue-color" value="L.E."  style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-blue-color" value="R.E." >
+                <input class="sheet-inputfield52 sheet-blue-color" value="S.O.I.">
+                <input class="sheet-inputfield52 sheet-blue-color" value="Psi+" style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-red-color" value="Blast Dmg" style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-red-color" value="LE/RE " style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-red-color" value="P+" >
+                <input class="sheet-inputfield52 sheet-red-color" value="Rng" >
+                <input class="sheet-inputfield52 sheet-green-color" value="Shield" style="width: 75px;">
+                <input class="sheet-inputfield52 sheet-green-color" value="S.P+" >
+    
+                <fieldset class="repeating_equipped-weapons">
+                    <input class="sheet-inputfield52" name="attr_equipped_weapon_name" value="" type="text" style="width: 75px;" >
+                    <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                    <input class="sheet-inputfield52" disabled>                
+                    <input class="sheet-inputfield52" disabled>
+                    <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                    <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                    <input class="sheet-inputfield52" style="width: 75px;" disabled>
+                    <input class="sheet-inputfield52" disabled>
+                    <input class="sheet-inputfield52" disabled>   
+                    <input class="sheet-inputfield52" style="width: 75px;"disabled>
+                    <input class="sheet-inputfield52" disabled>
+                    <button class="sheet-button-rollw"  type="roll" value="&{template:default} {{name=@{character_name} Rolls Strength}} {{Strength Roll=[[1d20+@{strength}]]}}"></button>            
+                    <input class="sheet-inputfield52" value="costs" type="text" style="width: 75px;" >
+                    <input class="sheet-inputfield52" style="width: 75px;" >
+                    <input class="sheet-inputfield52" >                
+                    <input class="sheet-inputfield52" >
+                    <input class="sheet-inputfield52" style="width: 75px;" >
+                    <input class="sheet-inputfield52" style="width: 75px;" >
+                    <input class="sheet-inputfield52" style="width: 75px;" >
+                    <input class="sheet-inputfield52" >
+                    <input class="sheet-inputfield52" >   
+                    <input class="sheet-inputfield52" style="width: 75px;">
+                    <input class="sheet-inputfield52" >              
+            </fieldset>
+        </div>
+    </div>    
 </div>
 
 <div class="sheet-editskills sheet-blue-color">       
