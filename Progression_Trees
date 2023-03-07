@@ -1,0 +1,132 @@
+<!-- 
+This is the portion of the JS/Sheetworkers that does the counting of poitns invested and then parsed against the skill tree selected. 
+I would like the option of multiple skill tree inputs (think of having a multiple instructors teaching you kung-fu. One of those instructors is really good, and one
+sucks, and one is average. Well, who you get that day determines your speed of prorgression. But it all adds up.
+
+Another thing, and I"m not sure this is possible. But if there was ONE JS that I could reference in the HTML so I can add as many as I want... OR, the JS made in such
+a way that the adding of new skills, abilities, etc., could easily be added.
+
+Also, these progressions also apply to repeating fields in the sheet.
+
+-->
+
+    on('change:strengthRacial change:strengthCybernetic change:strengthGenetic change:strengthVI change:strengthMisc change:psi_body_discipline_adaptation_str change:strengthPoints', function(eventInfo) {
+    getAttrs(['strengthRacial', 'strengthCybernetic', 'strengthGenetic', 'strengthVI', 'strengthMisc', 'psi_body_discipline_adaptation_str', 'strengthPoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.strengthRacial) || 0;
+        let c = parseInt(values.strengthCybernetic) || 0;
+        let g = parseInt(values.strengthGenetic) || 0;
+        let v = parseInt(values.strengthVI) || 0;
+        let m = parseInt(values.strengthMisc) || 0;
+        let psi_s = parseInt(values.psi_body_discipline_adaptation_str) || 0;
+        let p = parseInt(values.strengthPoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ strength : r+c+g+v+m+psi_s+skillLevelBought });
+    });
+    });
+    
+    
+    
+    on('change:dexterityRacial change:dexterityCybernetic change:dexterityGenetic change:dexterityVI change:dexterityMisc change:psi_body_discipline_adaptation_dex change:dexterityPoints', function(eventInfo) {
+    getAttrs(['dexterityRacial', 'dexterityCybernetic', 'dexterityGenetic', 'dexterityVI', 'dexterityMisc', 'psi_body_discipline_adaptation_dex', 'dexterityPoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.dexterityRacial) || 0;
+        let c = parseInt(values.dexterityCybernetic) || 0;
+        let g = parseInt(values.dexterityGenetic) || 0;
+        let v = parseInt(values.dexterityVI) || 0;
+        let m = parseInt(values.dexterityMisc) || 0;
+        let psi_d = parseInt(values.psi_body_discipline_adaptation_dex) || 0;
+        let p = parseInt(values.dexterityPoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ dexterity : r+c+g+v+m+psi_d+skillLevelBought });
+    });
+    });
+    
+    
+    on('change:constitutionRacial change:constitutionCybernetic change:constitutionGenetic change:constitutionVI change:constitutionMisc change:psi_body_discipline_adaptation_con change:constitutionPoints', function(eventInfo) {
+    getAttrs(['constitutionRacial', 'constitutionCybernetic', 'constitutionGenetic', 'constitutionVI', 'constitutionMisc', 'psi_body_discipline_adaptation_con', 'constitutionPoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.constitutionRacial) || 0;
+        let c = parseInt(values.constitutionCybernetic) || 0;
+        let g = parseInt(values.constitutionGenetic) || 0;
+        let v = parseInt(values.constitutionVI) || 0;
+        let m = parseInt(values.constitutionMisc) || 0;
+        let psi_c = parseInt(values.psi_body_discipline_adaptation_con) || 0;
+        let p = parseInt(values.constitutionPoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ constitution : r+c+g+v+m+psi_c+skillLevelBought });
+    });
+    });
+    
+    
+    
+    on('change:intelligenceRacial change:intelligenceCybernetic change:intelligenceGenetic change:intelligenceVI change:intelligenceMisc change:intelligencePoints', function(eventInfo) {
+    getAttrs(['intelligenceRacial', 'intelligenceCybernetic', 'intelligenceGenetic', "intelligenceVI", "intelligenceMisc", 'intelligencePoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.intelligenceRacial) || 0;
+        let c = parseInt(values.intelligenceCybernetic) || 0;
+        let g = parseInt(values.intelligenceGenetic) || 0;
+        let v = parseInt(values.intelligenceVI) || 0;
+        let m = parseInt(values.intelligenceMisc) || 0;
+        let p = parseInt(values.intelligencePoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ intelligence : r+c+g+v+m+skillLevelBought });
+    });
+    });
+    
+    
+    
+    on('change:wisdomRacial change:wisdomCybernetic change:wisdomGenetic change:wisdomVI change:wisdomMisc change:wisdomPoints', function(eventInfo) {
+    getAttrs(['wisdomRacial', 'wisdomCybernetic', 'wisdomGenetic', "wisdomVI", "wisdomMisc", 'wisdomPoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.wisdomRacial) || 0;
+        let c = parseInt(values.wisdomCybernetic) || 0;
+        let g = parseInt(values.wisdomGenetic) || 0;
+        let v = parseInt(values.wisdomVI) || 0;
+        let m = parseInt(values.wisdomMisc) || 0;
+        let p = parseInt(values.wisdomPoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ wisdom : r+c+g+v+m+skillLevelBought });
+    });
+    });
+    
+    
+    
+    on('change:charismaRacial change:charismaCybernetic change:charismaGenetic change:charismaVI change:charismaMisc change:charismaPoints', function(eventInfo) {
+    getAttrs(['charismaRacial', 'charismaCybernetic', 'charismaGenetic', "charismaVI", "charismaMisc", 'charismaPoints'], function(values) {
+        updatePointsSpent();
+        let r = parseInt(values.charismaRacial) || 0;
+        let c = parseInt(values.charismaCybernetic) || 0;
+        let g = parseInt(values.charismaGenetic) || 0;
+        let v = parseInt(values.charismaVI) || 0;
+        let m = parseInt(values.charismaMisc) || 0;
+        let p = parseInt(values.charismaPoints) || 0;
+        let progressionList = [];
+        for (i = 1; i < 100; i++) {
+            progressionList = progressionList.concat(i);
+        }
+        let skillLevelBought = buySkillLevel(progressionList, p);
+        setAttrs({ charisma : r+c+g+v+m+skillLevelBought });
+    
+    });
+    });
